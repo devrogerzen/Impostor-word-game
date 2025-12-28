@@ -135,8 +135,28 @@ export const Button = styled(motion.button)<ButtonProps>`
   position: relative;
   overflow: hidden;
   margin: 8px 0;
+  min-height: 48px; /* Touch target minimum size */
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+  touch-action: manipulation; /* Prevent double-tap zoom */
 
   ${({ variant = 'primary' }) => getButtonStyles(variant)}
+
+  @media (max-width: 768px) {
+    padding: 14px 22px;
+    font-size: 1.05rem;
+    min-height: 50px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 14px 20px;
+    font-size: 1rem;
+    min-height: 52px; /* Larger touch targets on mobile */
+  }
+
+  @media (max-width: 360px) {
+    padding: 12px 18px;
+    font-size: 0.95rem;
+  }
 
   &::before {
     content: '';
@@ -158,6 +178,10 @@ export const Button = styled(motion.button)<ButtonProps>`
 
   &:hover {
     transform: translateY(-2px);
+
+    @media (max-width: 768px) {
+      transform: none; /* Disable hover on touch devices */
+    }
   }
 
   &:disabled {
@@ -171,11 +195,20 @@ export const Button = styled(motion.button)<ButtonProps>`
 
 export const ButtonGroup = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 12px;
   margin-top: 20px;
   flex-wrap: wrap;
 
+  @media (max-width: 768px) {
+    gap: 10px;
+  }
+
   @media (max-width: 480px) {
     flex-direction: column;
+    gap: 8px;
+
+    button {
+      width: 100%;
+    }
   }
 `;
