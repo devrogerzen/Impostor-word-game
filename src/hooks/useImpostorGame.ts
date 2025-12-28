@@ -1,16 +1,26 @@
 import { useState, useCallback } from 'react';
 import type { GameState, GamePhase, Category, Player, Clue, Winner } from '../types/game.types';
 import { getRandomWordPair } from '../data/words';
+import { showAlert } from '../utils/sweetAlert';
+
+// Cryptographically secure random integer
+const getSecureRandomInt = (max: number): number => {
+  const randomBuffer = new Uint32Array(1);
+  window.crypto.getRandomValues(randomBuffer);
+  return randomBuffer[0] % max;
+};
 
 const initialState: GameState = {
   numPlayers: 4,
   selectedCategory: null,
+  playerNames: [],
   players: [],
   currentPlayerIndex: 0,
   clues: [],
   votes: {},
   normalWord: '',
   impostorIndex: -1,
+  impostorIndices: [],
   gamePhase: 'menu',
 };
 
@@ -27,6 +37,11 @@ export const useImpostorGame = () => {
     setState((prev) => ({ ...prev, selectedCategory: category }));
   }, []);
 
+  // Set player names
+  const setPlayerNames = useCallback((names: string[]) => {
+    setState((prev) => ({ ...prev, playerNames: names }));
+  }, []);
+
   // Change player count
   const changePlayerCount = useCallback((delta: number) => {
     setState((prev) => {
@@ -35,33 +50,65 @@ export const useImpostorGame = () => {
     });
   }, []);
 
+  // Calculate number of impostors based on player count
+  const getImpostorCount = (numPlayers: number): number => {
+    if (numPlayers <= 4) return 1;
+    if (numPlayers <= 6) return 2;
+    if (numPlayers <= 8) return 2;
+    return 3; // 9-10 players
+  };
+
+  // Select multiple random impostors without repetition
+  const selectImpostors = (numPlayers: number, count: number): number[] => {
+    const indices: number[] = [];
+    const available = Array.from({ length: numPlayers }, (_, i) => i);
+
+    for (let i = 0; i < count; i++) {
+      const randomIndex = getSecureRandomInt(available.length);
+      indices.push(available[randomIndex]);
+      available.splice(randomIndex, 1);
+    }
+
+    return indices.sort((a, b) => a - b);
+  };
+
   // Start game
   const startGame = useCallback(() => {
-    const { selectedCategory, numPlayers } = state;
+    const { selectedCategory, numPlayers, playerNames } = state;
 
     if (!selectedCategory) {
-      alert('Por favor selecciona una categoría');
+      showAlert.warning('Por favor selecciona una categoría antes de continuar');
+      return;
+    }
+
+    if (playerNames.length === 0) {
+      // If no names are set, go to names screen
+      setState((prev) => ({ ...prev, gamePhase: 'names' }));
       return;
     }
 
     const wordPair = getRandomWordPair(selectedCategory);
     if (!wordPair) {
-      alert('Error al obtener palabras');
+      showAlert.error('No se pudieron cargar las palabras. Intenta con otra categoría.');
       return;
     }
 
-    const impostorIndex = Math.floor(Math.random() * numPlayers);
+    const impostorCount = getImpostorCount(numPlayers);
+    const impostorIndices = selectImpostors(numPlayers, impostorCount);
+
     const players: Player[] = Array.from({ length: numPlayers }, (_, i) => ({
       id: i + 1,
-      word: i === impostorIndex ? wordPair.impostor : wordPair.normal,
-      isImpostor: i === impostorIndex,
+      name: playerNames[i] || `Jugador ${i + 1}`,
+      word: impostorIndices.includes(i) ? wordPair.impostor : wordPair.normal,
+      isImpostor: impostorIndices.includes(i),
       hasSeenWord: false,
     }));
 
     setState((prev) => ({
       ...prev,
       players,
-      impostorIndex,
+      impostorIndex: impostorIndices[0] ?? -1, // Keep for backwards compatibility
+      impostorIndices,
       normalWord: wordPair.normal,
       currentPlayerIndex: 0,
       clues: [],
@@ -97,14 +144,16 @@ export const useImpostorGame = () => {
   // Add clue
   const addClue = useCallback((clueText: string) => {
     if (!clueText.trim()) {
-      alert('Por favor escribe una pista');
+      showAlert.warning('Por favor escribe una pista antes de continuar');
       return;
     }
 
     setState((prev) => {
-      const playerNum = (prev.currentPlayerIndex % prev.numPlayers) + 1;
+      const playerIndex = prev.currentPlayerIndex % prev.numPlayers;
+      const player = prev.players[playerIndex];
       const newClue: Clue = {
-        player: playerNum,
+        player: player.id, // Keep for backwards compatibility
+        playerName: player.name,
         text: clueText,
       };
 
@@ -123,26 +172,46 @@ export const useImpostorGame = () => {
 
   // Tally votes
   const tallyVotes = useCallback(() => {
-    const { selectedVote, players } = state;
+    const { selectedVote, players, impostorIndices } = state;
 
     if (selectedVote === undefined) {
-      alert('Por favor vota por un jugador');
+      showAlert.warning('Por favor selecciona a un jugador para votar');
       return;
     }
 
     const wasImpostor = players[selectedVote].isImpostor;
 
+    // Check if all impostors have been eliminated
+    const remainingImpostors = impostorIndices.filter(
+      (idx) => idx !== selectedVote
+    );
+    const allImpostorsEliminated = wasImpostor && remainingImpostors.length === 0;
+
     setState((prev) => ({
       ...prev,
       gamePhase: 'vote-result',
-      votes: { ...prev.votes, votedPlayer: selectedVote, wasImpostor },
+      votes: {
+        ...prev.votes,
+        votedPlayer: selectedVote,
+        wasImpostor,
+        remainingImpostors: remainingImpostors.length,
+      },
     }));
 
     // Auto-transition after showing result
     setTimeout(() => {
-      if (wasImpostor) {
+      if (allImpostorsEliminated) {
+        // Players win if all impostors are eliminated
         showFinalScreen('players');
+      } else if (wasImpostor) {
+        // Continue playing if there are still impostors
+        setState((prev) => ({
+          ...prev,
+          gamePhase: 'game',
+          impostorIndices: remainingImpostors,
+        }));
       } else {
+        // Innocent was eliminated, impostors can guess
         setState((prev) => ({ ...prev, gamePhase: 'impostor-guess' }));
       }
     }, 3000);
@@ -151,7 +220,7 @@ export const useImpostorGame = () => {
   // Check impostor guess
   const checkImpostorGuess = useCallback((guess: string) => {
     if (!guess.trim()) {
-      alert('Por favor escribe tu respuesta');
+      showAlert.warning('Por favor escribe tu respuesta antes de continuar');
       return;
     }
 
@@ -192,6 +261,7 @@ export const useImpostorGame = () => {
     ...state,
     showScreen,
     selectCategory,
+    setPlayerNames,
     changePlayerCount,
     startGame,
     revealWord,

@@ -84,6 +84,7 @@ interface FinalScreenProps {
 
 const FinalScreen = ({ game }: FinalScreenProps) => {
   const winner = game.votes.winner;
+  const impostorCount = game.players.filter((p: any) => p.isImpostor).length;
 
   return (
     <Screen
@@ -97,8 +98,11 @@ const FinalScreen = ({ game }: FinalScreenProps) => {
         {winner === 'impostor' ? (
           <ResultBox variant="danger">
             <ResultIcon>😈</ResultIcon>
-            <h3>¡Gana el Impostor!</h3>
-            <p>El impostor adivinó la palabra correctamente</p>
+            <h3>¡Gana{impostorCount > 1 ? 'n' : ''} {impostorCount > 1 ? 'los Impostores' : 'el Impostor'}!</h3>
+            <p>
+              {impostorCount > 1 ? 'Los impostores adivinaron' : 'El impostor adivinó'} la palabra
+              correctamente
+            </p>
             <p>
               La palabra era: <strong>{game.normalWord}</strong>
             </p>
@@ -109,8 +113,8 @@ const FinalScreen = ({ game }: FinalScreenProps) => {
             <h3>¡Ganan los Jugadores!</h3>
             <p>
               {game.votes.votedPlayer !== undefined
-                ? 'Descubrieron al impostor'
-                : 'El impostor no pudo adivinar la palabra'}
+                ? `Descubrieron a ${impostorCount > 1 ? 'todos los impostores' : 'el impostor'}`
+                : `${impostorCount > 1 ? 'Los impostores no pudieron' : 'El impostor no pudo'} adivinar la palabra`}
             </p>
             {game.votes.votedPlayer === undefined && (
               <p>
@@ -128,7 +132,7 @@ const FinalScreen = ({ game }: FinalScreenProps) => {
           {game.players.map((player: any, index: number) => (
             <RoleRevealItem key={index} isImpostor={player.isImpostor}>
               <div>
-                <span className="player-name">Jugador {index + 1}</span>
+                <span className="player-name">{player.name}</span>
                 <small> - {player.word}</small>
               </div>
               <RoleBadge isImpostor={player.isImpostor}>

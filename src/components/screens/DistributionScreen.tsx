@@ -31,19 +31,39 @@ const WordLabel = styled.p`
   margin-bottom: 15px;
 `;
 
-const WordDisplay = styled.div`
+const WordDisplay = styled.div<{ isImpostor: boolean }>`
   font-size: 2.5rem;
   font-weight: bold;
   padding: 25px;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: ${({ isImpostor, theme }) =>
+    isImpostor ? theme.colors.danger : theme.colors.success};
   color: white;
   border-radius: 12px;
   margin: 20px 0;
-  box-shadow: 0 5px 20px rgba(99, 102, 241, 0.5);
+  box-shadow: ${({ isImpostor }) =>
+    isImpostor ? '0 8px 0 #C23456, 0 12px 24px rgba(239, 71, 111, 0.4)' : '0 8px 0 #04A87D, 0 12px 24px rgba(6, 214, 160, 0.4)'};
+  text-transform: uppercase;
+  letter-spacing: 2px;
 
   @media (max-width: 480px) {
     font-size: 2rem;
   }
+`;
+
+const RoleBadge = styled.div<{ isImpostor: boolean }>`
+  font-size: 1.3rem;
+  font-weight: 900;
+  padding: 15px 25px;
+  background: ${({ isImpostor, theme }) =>
+    isImpostor ? theme.colors.danger : theme.colors.success};
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  box-shadow: ${({ isImpostor }) =>
+    isImpostor ? '0 4px 0 #C23456' : '0 4px 0 #04A87D'};
+  display: inline-block;
 `;
 
 const WordInstruction = styled.p`
@@ -93,7 +113,7 @@ const DistributionScreen = ({ game }: DistributionScreenProps) => {
 
       <DistributionContent>
         <PlayerInfo>
-          <h3>Jugador {game.currentPlayerIndex + 1}</h3>
+          <h3>{currentPlayer.name}</h3>
           <p>Mira tu palabra y pasa el teléfono</p>
         </PlayerInfo>
 
@@ -109,9 +129,16 @@ const DistributionScreen = ({ game }: DistributionScreenProps) => {
           </WordContainer>
         ) : (
           <WordContainer>
+            <RoleBadge isImpostor={currentPlayer.isImpostor}>
+              {currentPlayer.isImpostor ? '🎭 ¡ERES EL IMPOSTOR!' : '✅ ERES UN JUGADOR NORMAL'}
+            </RoleBadge>
             <WordLabel>Tu palabra es:</WordLabel>
-            <WordDisplay>{currentPlayer.word}</WordDisplay>
-            <WordInstruction>¡Memorízala y no la digas en voz alta!</WordInstruction>
+            <WordDisplay isImpostor={currentPlayer.isImpostor}>{currentPlayer.word}</WordDisplay>
+            <WordInstruction>
+              {currentPlayer.isImpostor
+                ? '¡Actúa normal y no te delates!'
+                : '¡Memorízala y descubre al impostor!'}
+            </WordInstruction>
             <Button variant="primary" onClick={handleNext} fullWidth>
               Siguiente Jugador
             </Button>

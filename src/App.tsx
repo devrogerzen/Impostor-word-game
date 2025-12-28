@@ -7,6 +7,7 @@ import { useImpostorGame } from './hooks/useImpostorGame';
 import MenuScreen from './components/screens/MenuScreen';
 import RulesScreen from './components/screens/RulesScreen';
 import ConfigScreen from './components/screens/ConfigScreen';
+import NamesScreen from './components/screens/NamesScreen';
 import DistributionScreen from './components/screens/DistributionScreen';
 import GameScreen from './components/screens/GameScreen';
 import VotingScreen from './components/screens/VotingScreen';
@@ -26,6 +27,8 @@ function App() {
         return <RulesScreen game={game} />;
       case 'config':
         return <ConfigScreen game={game} />;
+      case 'names':
+        return <NamesScreen game={game} />;
       case 'distribution':
         return <DistributionScreen game={game} />;
       case 'game':

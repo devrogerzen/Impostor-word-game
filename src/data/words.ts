@@ -369,13 +369,20 @@ export const getCategories = (): Category[] => {
   return Object.keys(WORD_DATABASE) as Category[];
 };
 
+// Cryptographically secure random integer
+const getSecureRandomInt = (max: number): number => {
+  const randomBuffer = new Uint32Array(1);
+  window.crypto.getRandomValues(randomBuffer);
+  return randomBuffer[0] % max;
+};
+
 export const getRandomWordPair = (category: Category): WordPair | null => {
   const words = WORD_DATABASE[category];
   if (!words || words.length === 0) {
     console.error(`Categoría "${category}" no encontrada o vacía`);
     return null;
   }
-  const randomIndex = Math.floor(Math.random() * words.length);
+  const randomIndex = getSecureRandomInt(words.length);
   return words[randomIndex];
 };
 

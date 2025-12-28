@@ -125,6 +125,13 @@ const ConfigScreen = ({ game }: ConfigScreenProps) => {
     return `${icon} ${name}`;
   };
 
+  const getImpostorCount = (numPlayers: number): number => {
+    if (numPlayers <= 4) return 1;
+    if (numPlayers <= 6) return 2;
+    if (numPlayers <= 8) return 2;
+    return 3;
+  };
+
   return (
     <Screen
       key="config"
@@ -152,7 +159,11 @@ const ConfigScreen = ({ game }: ConfigScreenProps) => {
               <AiOutlinePlus />
             </button>
           </NumberSelector>
-          <small>Mínimo 3, máximo 10 jugadores</small>
+          <small>
+            Mínimo 3, máximo 10 jugadores
+            <br />
+            🎭 Impostores: {getImpostorCount(game.numPlayers)}
+          </small>
         </ConfigOption>
 
         <ConfigOption>

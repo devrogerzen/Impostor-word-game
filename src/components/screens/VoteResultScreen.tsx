@@ -45,6 +45,8 @@ interface VoteResultScreenProps {
 const VoteResultScreen = ({ game }: VoteResultScreenProps) => {
   const votedPlayer = game.votes.votedPlayer;
   const wasImpostor = game.votes.wasImpostor;
+  const remainingImpostors = game.votes.remainingImpostors ?? 0;
+  const allImpostorsEliminated = wasImpostor && remainingImpostors === 0;
 
   return (
     <Screen
@@ -57,22 +59,37 @@ const VoteResultScreen = ({ game }: VoteResultScreenProps) => {
       <ResultContent>
         {wasImpostor ? (
           <ResultBox variant="success">
-            <ResultIcon>🎉</ResultIcon>
-            <h3>¡Victoria de los Jugadores!</h3>
-            <p>El Jugador {votedPlayer + 1} era el impostor</p>
+            <ResultIcon>{allImpostorsEliminated ? '🎉' : '✅'}</ResultIcon>
+            <h3>
+              {allImpostorsEliminated
+                ? '¡Victoria Total de los Jugadores!'
+                : '¡Eliminaron a un Impostor!'}
+            </h3>
+            <p>{game.players[votedPlayer].name} era un impostor</p>
             <p>
               Su palabra era: <strong>{game.players[votedPlayer].word}</strong>
             </p>
             <p>
               La palabra correcta era: <strong>{game.normalWord}</strong>
             </p>
+            {!allImpostorsEliminated && (
+              <p style={{ marginTop: '15px', fontSize: '1.2rem', color: '#F7B801' }}>
+                ⚠️ Quedan <strong>{remainingImpostors}</strong> impostor
+                {remainingImpostors > 1 ? 'es' : ''} en el juego
+              </p>
+            )}
           </ResultBox>
         ) : (
           <ResultBox variant="warning">
             <ResultIcon>😬</ResultIcon>
             <h3>¡No era el impostor!</h3>
-            <p>El Jugador {votedPlayer + 1} NO era el impostor</p>
-            <p>El impostor tiene una última oportunidad...</p>
+            <p>{game.players[votedPlayer].name} NO era el impostor</p>
+            <p>
+              {remainingImpostors > 1
+                ? 'Los impostores tienen'
+                : 'El impostor tiene'}{' '}
+              una última oportunidad...
+            </p>
           </ResultBox>
         )}
       </ResultContent>

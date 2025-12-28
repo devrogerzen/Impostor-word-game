@@ -70,13 +70,13 @@ const VotingScreen = ({ game }: VotingScreenProps) => {
 
       <VotingContent>
         <PlayersVoteList>
-          {game.players.map((_: any, index: number) => (
+          {game.players.map((player: any, index: number) => (
             <PlayerVoteItem
               key={index}
               selected={game.selectedVote === index}
               onClick={() => game.selectVote(index)}
             >
-              <span className="player-name">Jugador {index + 1}</span>
+              <span className="player-name">{player.name}</span>
               {game.selectedVote === index && (
                 <span className="vote-icon">
                   <IoCheckboxOutline />

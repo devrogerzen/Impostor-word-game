@@ -5,6 +5,7 @@ import { Input, InputGroup } from '../common/Input';
 import styled from 'styled-components';
 import { IoDiceOutline, IoPeopleOutline } from 'react-icons/io5';
 import { BiMessageDetail } from 'react-icons/bi';
+import { showAlert } from '../../utils/sweetAlert';
 
 const GameContent = styled.div`
   margin-bottom: 20px;
@@ -73,11 +74,14 @@ interface GameScreenProps {
 
 const GameScreen = ({ game }: GameScreenProps) => {
   const [clueText, setClueText] = useState('');
+  const currentPlayerIndex = game.currentPlayerIndex % game.numPlayers;
+  const currentPlayer = game.players[currentPlayerIndex];
 
   const handleAddClue = () => {
     if (clueText.trim()) {
       game.addClue(clueText);
       setClueText('');
+      showAlert.success('¡Pista agregada correctamente!', '✅ Pista Guardada');
     }
   };
 
@@ -109,7 +113,7 @@ const GameScreen = ({ game }: GameScreenProps) => {
 
       <GameContent>
         <CurrentTurn>
-          <p>Turno del Jugador {(game.currentPlayerIndex % game.numPlayers) + 1}</p>
+          <p>Turno de {currentPlayer.name}</p>
           <TurnInstruction>Da una pista sobre tu palabra</TurnInstruction>
         </CurrentTurn>
 
@@ -123,7 +127,7 @@ const GameScreen = ({ game }: GameScreenProps) => {
             ) : (
               game.clues.map((clue: any, index: number) => (
                 <ClueItem key={index}>
-                  <strong>Jugador {clue.player}:</strong> {clue.text}
+                  <strong>{clue.playerName}:</strong> {clue.text}
                 </ClueItem>
               ))
             )}
