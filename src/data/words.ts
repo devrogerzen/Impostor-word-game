@@ -329,6 +329,39 @@ export const WORD_DATABASE: Record<Category, WordPair[]> = {
     { normal: "PSYCHO THRILLER", impostor: "PSICOLÓGICA" },
     { normal: "PRISON", impostor: "ESCAPE" },
     { normal: "ANTIHÉROE", impostor: "VILLANOS" }
+  ],
+
+  dragonball: [
+    { normal: "GOKU", impostor: "VEGETA" },
+    { normal: "GOHAN", impostor: "GOTEN" },
+    { normal: "TRUNKS", impostor: "TRUNKS DEL FUTURO" },
+    { normal: "PICCOLO", impostor: "KAMI" },
+    { normal: "KRILLIN", impostor: "YAMCHA" },
+    { normal: "FREEZER", impostor: "COOLER" },
+    { normal: "CELL", impostor: "BUU" },
+    { normal: "KAMEHAMEHA", impostor: "GALICK GUN" },
+    { normal: "MAKANKOSAPPO", impostor: "DODONPA" },
+    { normal: "GENKIDAMA", impostor: "BIG BANG ATTACK" },
+    { normal: "SUPER SAIYAN", impostor: "ULTRA INSTINTO" },
+    { normal: "FUSIÓN", impostor: "POTHALA" },
+    { normal: "VEGETTO", impostor: "GOGETA" },
+    { normal: "ANDROIDE 17", impostor: "ANDROIDE 18" },
+    { normal: "BULMA", impostor: "CHI-CHI" },
+    { normal: "MAESTRO ROSHI", impostor: "KAIO SAMA" },
+    { normal: "SHENLONG", impostor: "PORUNGA" },
+    { normal: "ESFERAS DEL DRAGÓN", impostor: "RADAR DEL DRAGÓN" },
+    { normal: "CAPSULE CORP", impostor: "RED RIBBON" },
+    { normal: "TORNEO DE PODER", impostor: "TORNEO DE CELL" },
+    { normal: "NAMEK", impostor: "PLANETA VEGETA" },
+    { normal: "TIERRA", impostor: "KAIO SHIN" },
+    { normal: "Bills", impostor: "WHIS" },
+    { normal: "JIREN", impostor: "HIT" },
+    { normal: "BROLY", impostor: "BARDOCK" },
+    { normal: "GINYU", impostor: "RECOOM" },
+    { normal: "NAPPA", impostor: "RADITZ" },
+    { normal: "MAJIN BUU", impostor: "KID BUU" },
+    { normal: "KAKAROTO", impostor: "SON GOKU" },
+    { normal: "GRAN SAIYAMAN", impostor: "GOHAN ADULTO" }
   ]
 };
 

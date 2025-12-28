@@ -109,6 +109,7 @@ const categoryIcons: Record<Category, string> = {
   tecnologia: '💻',
   musica: '🎵',
   peliculas: '🎬',
+  dragonball: '🐉',
 };
 
 interface ConfigScreenProps {

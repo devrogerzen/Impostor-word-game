@@ -15,7 +15,8 @@ export type Category =
   | 'transporte'
   | 'tecnologia'
   | 'musica'
-  | 'peliculas';
+  | 'peliculas'
+  | 'dragonball';
 
 export interface Player {
   id: number;
