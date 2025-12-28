@@ -64,7 +64,7 @@ const MenuScreen = ({ game }: MenuScreenProps) => {
         <h1>
           <FaMask /> EL IMPOSTOR
         </h1>
-        <p>Juego de deducción social</p>
+        <p>¿Confías en tus amigos? Piénsalo dos veces</p>
       </Logo>
       <MenuButtons>
         <Button
