@@ -25,8 +25,8 @@ const FloatingShape = styled(motion.div)<{ size: number; color: string }>`
   height: ${({ size }) => size}px;
   border-radius: 50%;
   background: ${({ color }) => color};
-  filter: blur(60px);
-  opacity: 0.15;
+  filter: blur(80px);
+  opacity: 0.2;
 `;
 
 const ParallaxBackground = () => {
@@ -55,22 +55,22 @@ const ParallaxBackground = () => {
         transition={{ type: 'spring', stiffness: 50, damping: 30 }}
       >
         <FloatingShape
-          size={400}
-          color="#6366f1"
-          style={{ top: '10%', left: '10%' }}
+          size={450}
+          color="#FF6B35"
+          style={{ top: '5%', left: '5%' }}
           animate={{
             scale: [1, 1.2, 1],
-            opacity: [0.1, 0.15, 0.1],
+            opacity: [0.15, 0.25, 0.15],
           }}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         />
         <FloatingShape
-          size={300}
-          color="#ec4899"
-          style={{ bottom: '20%', right: '15%' }}
+          size={350}
+          color="#F7B801"
+          style={{ bottom: '15%', right: '10%' }}
           animate={{
             scale: [1, 1.3, 1],
-            opacity: [0.1, 0.2, 0.1],
+            opacity: [0.12, 0.22, 0.12],
           }}
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
         />
@@ -86,22 +86,22 @@ const ParallaxBackground = () => {
         transition={{ type: 'spring', stiffness: 60, damping: 30 }}
       >
         <FloatingShape
-          size={250}
-          color="#8b5cf6"
-          style={{ top: '40%', right: '20%' }}
+          size={300}
+          color="#7209B7"
+          style={{ top: '35%', right: '15%' }}
           animate={{
-            scale: [1, 1.1, 1],
-            opacity: [0.15, 0.2, 0.15],
+            scale: [1, 1.15, 1],
+            opacity: [0.18, 0.28, 0.18],
           }}
           transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
         />
         <FloatingShape
-          size={350}
-          color="#3b82f6"
-          style={{ bottom: '10%', left: '20%' }}
+          size={400}
+          color="#004E89"
+          style={{ bottom: '5%', left: '15%' }}
           animate={{
             scale: [1, 1.25, 1],
-            opacity: [0.1, 0.18, 0.1],
+            opacity: [0.15, 0.25, 0.15],
           }}
           transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
         />
@@ -117,22 +117,22 @@ const ParallaxBackground = () => {
         transition={{ type: 'spring', stiffness: 70, damping: 30 }}
       >
         <FloatingShape
-          size={200}
-          color="#a855f7"
-          style={{ top: '60%', left: '40%' }}
+          size={250}
+          color="#EF476F"
+          style={{ top: '55%', left: '35%' }}
           animate={{
-            scale: [1, 1.15, 1],
-            opacity: [0.12, 0.18, 0.12],
+            scale: [1, 1.2, 1],
+            opacity: [0.16, 0.26, 0.16],
           }}
           transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
         />
         <FloatingShape
-          size={180}
-          color="#f43f5e"
-          style={{ top: '25%', right: '35%' }}
+          size={220}
+          color="#06D6A0"
+          style={{ top: '20%', right: '30%' }}
           animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.1, 0.16, 0.1],
+            scale: [1, 1.18, 1],
+            opacity: [0.14, 0.24, 0.14],
           }}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
         />

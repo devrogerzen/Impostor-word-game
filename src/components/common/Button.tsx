@@ -11,42 +11,110 @@ const getButtonStyles = (variant: ButtonProps['variant']) => {
     case 'primary':
       return css`
         background: ${({ theme }) => theme.colors.primary};
+        color: white;
+        border: 3px solid ${({ theme }) => theme.colors.primary};
+        box-shadow: 0 4px 0 ${({ theme }) => theme.colors.primaryDark};
+
         &:hover {
           background: ${({ theme }) => theme.colors.primaryDark};
-          box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+          transform: translateY(-4px);
+          box-shadow: 0 8px 0 ${({ theme }) => theme.colors.primaryDark},
+                      0 12px 24px rgba(255, 107, 53, 0.3);
+        }
+
+        &:active {
+          transform: translateY(2px);
+          box-shadow: 0 2px 0 ${({ theme }) => theme.colors.primaryDark};
         }
       `;
     case 'secondary':
       return css`
         background: ${({ theme }) => theme.colors.secondary};
+        color: white;
+        border: 3px solid ${({ theme }) => theme.colors.secondary};
+        box-shadow: 0 4px 0 #003666;
+
         &:hover {
-          background: #475569;
+          background: #00619e;
+          transform: translateY(-4px);
+          box-shadow: 0 8px 0 #003666,
+                      0 12px 24px rgba(0, 78, 137, 0.3);
+        }
+
+        &:active {
+          transform: translateY(2px);
+          box-shadow: 0 2px 0 #003666;
         }
       `;
     case 'vote':
       return css`
-        background: ${({ theme }) => theme.colors.warning};
+        background: ${({ theme }) => theme.colors.accent};
+        color: ${({ theme }) => theme.colors.textDark};
+        border: 3px solid ${({ theme }) => theme.colors.accent};
+        box-shadow: 0 4px 0 #d99a00;
+        font-weight: 700;
+
         &:hover {
-          background: #d97706;
+          background: #ffc933;
+          transform: translateY(-4px);
+          box-shadow: 0 8px 0 #d99a00,
+                      0 12px 24px rgba(247, 184, 1, 0.3);
+        }
+
+        &:active {
+          transform: translateY(2px);
+          box-shadow: 0 2px 0 #d99a00;
         }
       `;
     case 'reveal':
       return css`
-        background: linear-gradient(135deg, #ec4899, #8b5cf6);
+        background: ${({ theme }) => theme.colors.purple};
+        color: white;
+        border: 3px solid ${({ theme }) => theme.colors.purple};
+        box-shadow: 0 6px 0 #5a0891;
         font-size: 1.3rem;
         padding: 20px;
+        font-weight: 700;
         animation: pulse 2s infinite;
 
         @keyframes pulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.05); }
+          0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 6px 0 #5a0891;
+          }
+          50% {
+            transform: scale(1.05);
+            box-shadow: 0 8px 0 #5a0891, 0 12px 32px rgba(114, 9, 183, 0.4);
+          }
+        }
+
+        &:hover {
+          background: #8f2dd1;
+          animation: none;
+        }
+
+        &:active {
+          transform: translateY(3px);
+          box-shadow: 0 3px 0 #5a0891;
         }
       `;
     case 'danger':
       return css`
         background: ${({ theme }) => theme.colors.danger};
+        color: white;
+        border: 3px solid ${({ theme }) => theme.colors.danger};
+        box-shadow: 0 4px 0 #d13555;
+
         &:hover {
-          background: #dc2626;
+          background: #f16581;
+          transform: translateY(-4px);
+          box-shadow: 0 8px 0 #d13555,
+                      0 12px 24px rgba(239, 71, 111, 0.3);
+        }
+
+        &:active {
+          transform: translateY(2px);
+          box-shadow: 0 2px 0 #d13555;
         }
       `;
     default:

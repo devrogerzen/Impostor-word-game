@@ -6,29 +6,37 @@ import { IoBookOutline } from 'react-icons/io5';
 
 const Logo = styled.div`
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 
   h1 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     margin-bottom: 10px;
-    background: linear-gradient(135deg, #6366f1, #ec4899);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: ${({ theme }) => theme.colors.primary};
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 15px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 4px 4px 0 ${({ theme }) => theme.colors.primaryDark};
   }
 
   p {
-    color: ${({ theme }) => theme.colors.textMuted};
-    font-size: 1rem;
+    color: ${({ theme }) => theme.colors.accent};
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
   }
 
   @media (max-width: 480px) {
     h1 {
-      font-size: 2rem;
+      font-size: 2.2rem;
+    }
+
+    p {
+      font-size: 0.9rem;
     }
   }
 `;
