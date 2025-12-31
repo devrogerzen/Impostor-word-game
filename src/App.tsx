@@ -4,6 +4,7 @@ import { GlobalStyles } from './styles/GlobalStyles';
 import { theme } from './styles/theme';
 import { Container } from './components/common/Container';
 import { useImpostorGame } from './hooks/useImpostorGame';
+import { useNativeFeatures } from './hooks/useNativeFeatures';
 import MenuScreen from './components/screens/MenuScreen';
 import RulesScreen from './components/screens/RulesScreen';
 import ConfigScreen from './components/screens/ConfigScreen';
@@ -18,6 +19,14 @@ import ParallaxBackground from './components/ParallaxBackground';
 
 function App() {
   const game = useImpostorGame();
+
+  // Inicializar features nativas (StatusBar, SplashScreen, etc.)
+  const { isNative, platform } = useNativeFeatures();
+
+  // Log solo en desarrollo para verificar plataforma
+  if (import.meta.env.DEV) {
+    console.log(`Running on: ${platform}${isNative ? ' (Native)' : ' (Web)'}`);
+  }
 
   const renderScreen = () => {
     switch (game.gamePhase) {
